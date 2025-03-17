@@ -15,7 +15,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository cRep;
 
-    public String adicionarProduto(ClienteDTO clienteDTO) {
+    public String adicionarCliente(ClienteDTO clienteDTO) {
         if(cRep.existsByTelefone(clienteDTO.getTelefone())){
             throw new IllegalArgumentException("Telefone já Cadastrado");
         }
