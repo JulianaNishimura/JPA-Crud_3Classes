@@ -17,9 +17,9 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @PostMapping
-    public ResponseEntity<String> adicionarProduto(@RequestBody ClienteDTO clienteDTO) {
+    public ResponseEntity<String> adicionarCliente(@RequestBody ClienteDTO clienteDTO) {
         try {
-            String mensagem = clienteService.adicionarProduto(clienteDTO);
+            String mensagem = clienteService.adicionarCliente(clienteDTO);
             return ResponseEntity.ok(mensagem);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
