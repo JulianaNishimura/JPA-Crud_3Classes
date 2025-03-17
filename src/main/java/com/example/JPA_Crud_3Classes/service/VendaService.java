@@ -57,10 +57,10 @@ public class VendaService {
     }
 
     public String atualizarVenda(Long id, VendaDTO vendaDTO) {
-        if (!vRep.existsById(id)) {
+        Venda venda = vRep.findById(id).orElse(null);
+        if (venda == null) {
             return "Venda não encontrada com o id: " + id;
         }
-        Venda venda = vRep.findById(id).orElseThrow(() -> new RuntimeException("Erro ao buscar a venda"));
 
         Cliente cliente = cRep.findById(vendaDTO.getClienteId()).orElse(null);
         if (cliente == null) {
@@ -72,13 +72,26 @@ public class VendaService {
             return "Alguns produtos não foram encontrados.";
         }
 
-//        assert venda != null;
-        //por que intellij pediu para eu usar? - pq coloquei or else null na venda :( mudarei para throw.
+        // Desassociar o cliente antigo, se for diferente
+        Cliente clienteAntigo = venda.getCliente();
+        if (clienteAntigo != null && !clienteAntigo.equals(cliente)) {
+            clienteAntigo.setVenda(null);
+            cRep.save(clienteAntigo);
+        }
+
+        // Atualizar a venda
         venda.setDataDaVenda(vendaDTO.getDataDaVenda());
         venda.setCliente(cliente);
-        venda.setProdutos(produtos);
-        vRep.save(venda);
+        cliente.setVenda(venda); // Manter o relacionamento bidirecional
 
+        // Atualizar os produtos sem substituir a coleção
+        venda.getProdutos().clear(); // Remove os produtos antigos (orphanRemoval = true os deleta)
+        venda.getProdutos().addAll(produtos); // Adiciona os novos produtos
+        for (Produto produto : produtos) {
+            produto.setVenda(venda); // Atualiza o lado do Produto
+        }
+
+        vRep.save(venda);
         return "Venda atualizada com sucesso!";
     }
 
