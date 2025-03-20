@@ -96,12 +96,8 @@ public class VendaService {
     }
 
     public String deletarVenda(Long id) {
-        if (!vRep.existsById(id)) {
-            return "Venda não encontrada";
-        }
 
         Venda venda = vRep.findById(id).orElseThrow(() -> new RuntimeException("Venda não encontrada"));
-
 
         Cliente cliente = venda.getCliente();
         if (cliente != null) {

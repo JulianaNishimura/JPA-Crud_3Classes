@@ -32,6 +32,6 @@ public class Venda {
     // MappedBy - Isso indica que o relacionamento é bidirecional, ou seja, existe um campo na classe Produto que faz referência à Venda. O campo venda em Produto é o que mapeia a relação.
     //O cascade é usado para definir se as operações realizadas em uma entidade devem ser propagadas para as entidades relacionadas.
     //CascadeType.ALL significa que todas as operações (persistir, atualizar, excluir, etc.) realizadas na Venda serão propagadas para os produtos associados
-    //orphanRemoval é uma opção que, quando configurada como true, remove os produtos órfãos.
+    //orphanRemoval é uma opção que, quando configurada como true, remove os órfãos.
     //Um produto órfão é um produto que estava associado a uma venda, mas, por algum motivo, perdeu a associação (isto é, foi desassociado da venda).
 }
